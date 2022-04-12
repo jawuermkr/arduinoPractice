@@ -1,0 +1,35 @@
+int triger = 5; // Pin para el triger del sensor
+int echo = 7; // Pin para el echo del sensor
+int ledPin = 13; // LED que se encuentra en el pin 13
+
+void setup() {
+  
+  pinMode(triger, OUTPUT); // Se define como salida
+  pinMode(echo, INPUT); // Se define como entrada
+  pinMode(ledPin, OUTPUT); // Pin 13 será salida digital
+  Serial.begin(9600); 
+}
+void loop() {
+  
+  digitalWrite(triger, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(triger, HIGH);
+  delayMicroseconds(10);
+
+  // Documentación para cáculo
+  float tiempo=pulseIn(echo,HIGH);
+  float distancia = (tiempo/2)/29.1;
+  
+  Serial.print(distancia);
+  Serial.println("cm");
+  delay(1000);
+  
+  if (distancia < 30){
+    digitalWrite(ledPin, HIGH);  // Enciende el LED
+    delay(1000); 
+  }else if (distancia > 31){
+    digitalWrite(ledPin, LOW);   // Apaga el LED
+    delay(1000);
+    }
+}
