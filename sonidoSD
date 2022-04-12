@@ -1,0 +1,28 @@
+// Cargar la librería TMRpcm. Para el proyecto se usa arduino uno, lector de tarjeta sd y parlante.
+
+#include <SD.h> 
+#include <SPI.h> 
+#include <TMRpcm.h> 
+
+#define pinSD 10 // Define el pin para seleccionar la tarjeta SD
+
+TMRpcm tmrpcm; //Se crea un objeto de la librería TMRpcm 
+
+void setup(){ 
+ tmrpcm.speakerPin = 9; // Se define el pin en el que está conectado el parlante
+ Serial.begin(9600); // Se inicia la comunicación serial.
+
+//Definir volumen si es necesario de esta forma -> tmrpcm.setVolume(255);
+} 
+
+void loop(){
+ if (!SD.begin(pinSD)) { 
+ Serial.println("Fallo en la tarjeta SD");
+ delay(10000);
+ return;
+ }else {
+ Serial.println("¡Debería sonar!"); 
+ tmrpcm.play("03.wav");
+ delay(10000);
+ } 
+}   
