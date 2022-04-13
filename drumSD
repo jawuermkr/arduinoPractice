@@ -1,0 +1,35 @@
+//Incluir las líbrerias necesarias. Con TMRpcm controlamos lector SD
+// Los audios deben estar en formato .wav a 8bit
+
+#include <SD.h> 
+#include <SPI.h> 
+#include <TMRpcm.h>
+#define pinSD 10 //define el pin para seleccionar la tarjeta SD 
+
+int caja = 3; // Se define el puerto analógico.
+int sensor = 0; // Se inicia el sensor en 0.
+int golpe = 600; // Se define un máxsimo para el sensor.
+
+TMRpcm tmrpcm; //Se crea un objeto de la librería TMRpcm 
+
+void setup(){ 
+ tmrpcm.speakerPin = 9; //Se define el pin en el que está conectada la bocina 
+ Serial.begin(9600); //Se inicia la comunicación serial
+
+ // Para comprobar lectura de SD
+ if (!SD.begin(pinSD)) { 
+    Serial.println("Fallo en la tarjeta SD");
+    return;
+  }
+}
+
+void loop(){
+ sensor = analogRead(caja); // Igualamos variable del sensor a la lectura analógica.
+ Serial.println(sensor); // Imprimimos para ver en monitor.
+ 
+  if(sensor > golpe) {
+  Serial.println("¡Debería sonar caja!"); 
+  tmrpcm.play("01.wav");
+  sensor = 0;
+}
+}
